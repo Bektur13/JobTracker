@@ -20,3 +20,5 @@ const fetchData = async (id) => {
         console.error('Query error', err);
     }
 }
+
+await pool.end();
