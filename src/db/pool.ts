@@ -1,24 +1,29 @@
-import { Pool } from 'pg';
+import pg from 'pg';
+const { Pool } = pg;
 
 const pool = new Pool({
     host: 'localhost',
-    user: 'database-user',
+    user: 'dbuser',
     max: 20,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000,
     maxLifetimeSeconds: 60,
     onConnect: async (client) => {
-        await client.query(`SET ${process.env.DATABASE_URL} TO  `)
+        await client.query(`SELECT * FROM ${process.env.DATABASE_URL}`)
     }
 });
 
-const fetchData = async (id) => {
+pool.on('error', (err) => {
+    console.log('Unexpected error on idle client', err);
+});
+
+export const query = async (text: string, params?: unknown[]) => {
+    const start = Date.now();
     try {
-        const res = await pool.query('SELECT * FROM applications WHERE id = $1', [id]);
-        return res.rows[0];
-    } catch (err) {
-        console.error('Query error', err);
+        const res = await pool.query(text, params);
+        return res;
+    } catch (error) {
+        console.error('Database query error: ', error);
+        throw error;
     }
 }
-
-await pool.end();
