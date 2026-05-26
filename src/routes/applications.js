@@ -9,18 +9,7 @@ router.get('/', (req, res) => {
 
     const id = Number(req.query.id);
 
-    const applications = [
-        {
-            id: 1,
-            company: "Google",
-            status: "In progress",
-        },
-        {
-            id: 2,
-            company: "Amazon",
-            status: "Done",
-        }
-    ]
+    const applications = [];
 
     if(id) {
         const requested = applications.find((app) => app.id === id);
