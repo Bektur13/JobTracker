@@ -5,7 +5,7 @@ router.get('/', (req, res) => {
     res.send('Hello from Express');
 });
 
-router.get('/applications', (req, res) => {
+router.get('/', (req, res) => {
 
     const id = Number(req.query.id);
 
