@@ -1,12 +1,15 @@
 import express from 'express';
-const app = express();
+const router = express.Router();
 
-app.get('/', (req, res) => {
+router.get('/', (req, res) => {
     res.send('Hello from Express');
 });
 
-app.get('/applications', (req, res) => {
-    res.json([
+router.get('/applications', (req, res) => {
+
+    const id = Number(req.query.id);
+
+    const applications = [
         {
             id: 1,
             company: "Google",
@@ -17,9 +20,14 @@ app.get('/applications', (req, res) => {
             company: "Amazon",
             status: "Done",
         }
-    ]);
+    ]
+
+    if(id) {
+        const requested = applications.find((app) => app.id === id);
+        return res.json(requested);
+    }
+
+    res.json(applications);
 });
 
-app.listen(3000, () => {
-    console.log('The server is running');
-})
+export default router;
