@@ -18,7 +18,7 @@ pool.on('error', (err) => {
 });
 
 export const query = async (text: string, params?: unknown[]) => {
-    const start = Date.now();
+    // const start = Date.now();
     try {
         const res = await pool.query(text, params);
         return res;
