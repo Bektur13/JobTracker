@@ -1,22 +1,30 @@
 import express from 'express';
+import { query } from '@/Pool.ts';
+
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.send('Hello from Express');
-});
-
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
 
     const id = Number(req.query.id);
 
-    const applications = [];
+    try {
+        if(id) {
+            const { rows } = await query('SELECT * FROM applications WHERE id = $1', [id]);
+        
+            if(rows.length === 0) {
+                return res.status(404).json( {error: "Application not found"} );
+            }
 
-    if(id) {
-        const requested = applications.find((app) => app.id === id);
-        return res.json(requested);
+            return res.json(rows[0]);
+        }
+
+        const { rows } = await query('SELECT * FROM applications')
+        return res.json(rows);
+
+    } catch(error) {
+        return res.status(500).json({ error: "Internal Server Error"} );
     }
 
-    res.json(applications);
 });
 
 export default router;

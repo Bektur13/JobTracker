@@ -2,15 +2,11 @@ import pg from 'pg';
 const { Pool } = pg;
 
 const pool = new Pool({
-    host: 'localhost',
-    user: 'dbuser',
+    connectionString: process.env.DATABASE_URL || 'postgres://491cc305f9184ce0ec72c2bde5ef4be677fb59e51a9b3051f45a8b3bafefa448:sk_9FrRzRRwg38w_6VhzSG6d@db.prisma.io:5432/postgres?sslmode=require',
     max: 20,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000,
     maxLifetimeSeconds: 60,
-    onConnect: async (client) => {
-        await client.query(`SELECT * FROM ${process.env.DATABASE_URL}`)
-    }
 });
 
 pool.on('error', (err) => {
@@ -18,7 +14,6 @@ pool.on('error', (err) => {
 });
 
 export const query = async (text: string, params?: unknown[]) => {
-    // const start = Date.now();
     try {
         const res = await pool.query(text, params);
         return res;
