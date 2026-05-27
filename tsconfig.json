@@ -36,7 +36,7 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     "src/routes/applications.js"
-  ],
+, "src/seed.js"  ],
   "exclude": [
     "node_modules"
   ]
