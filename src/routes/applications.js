@@ -1,7 +1,9 @@
 import express from 'express';
+import { PrismaClient } from '@prisma/client';
 import { query } from '@/Pool.ts';
 
 const router = express.Router();
+const prisma = new PrismaClient();
 
 router.get('/', async (req, res) => {
 
@@ -9,19 +11,21 @@ router.get('/', async (req, res) => {
 
     try {
         if(id) {
-            const { rows } = await query('SELECT * FROM applications WHERE id = $1', [id]);
+            const application = await prisma.application.findUnique({
+                where: {id: id},
+            })
         
-            if(rows.length === 0) {
-                return res.status(404).json( {error: "Application not found"} );
+            if(!application) {
+                return res.status(404).json({error: 'Application not found'});
             }
 
-            return res.json(rows[0]);
+            return res.json(application);
         }
 
-        const { rows } = await query('SELECT * FROM applications')
-        return res.json(rows);
+        const applications = await prisma.application.findMany();
+        return res.json(applications);
 
-    } catch(error) {
+    } catch(err) {
         return res.status(500).json({ error: "Internal Server Error"} );
     }
 
