@@ -15,5 +15,4 @@ const create = async () => {
 
 const get = async () => {
     const applicaton = await prisma.application.findMany();
-
 }
