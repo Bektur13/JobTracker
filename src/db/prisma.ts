@@ -12,7 +12,7 @@ import { prisma } from '@/lib/prisma';
 // }
 
 const create = async () => {
-    const application = await prisma.applications.create({
+    const application = await prisma.application.create({
         data: {
             company: "Google",
             role: "Software Engineer",
