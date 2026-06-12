@@ -22,13 +22,30 @@ router.get('/', async (req: Request, res: Response) => {
     }
 });
 
-router.patch('/', async (req: Request, res: Response) => {
+router.patch('/:id', async (req: Request, res: Response) => {
     try {
-        const application = await prisma.application.update({
-            where: { status: { contains: "prisma.io" } },
-            data: { role: "ADMIN" },
-        })
+        const applicationId = parseInt(req.params.id as string, 10);
+        if (Number.isNaN(applicationId)) {
+            return res.status(400).json({ error: 'Invalid application id' });
+        }
+
+        const { status, notes } = req.body;
+
+        const updateApplication = await prisma.application.update({
+            where: {
+                id: applicationId,
+            },
+            data: {
+                status,
+                notes,
+            },
+        });
+
+        return res.status(200).json(updateApplication);
+    } catch (error) {
+        console.error('PATCH error:', error);
+        return res.status(500).json({ error: 'Unable to update application' });
     }
-})
+});
 
 export default router;
