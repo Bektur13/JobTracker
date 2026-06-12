@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.use('/applications', applicationsRoutes);
 
-app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+app.use((err: Error, _req: express.Request, res: express.Response) => {
     console.error('Express error handler:', err);
     res.status(500).json({ error: err.message });
 });
