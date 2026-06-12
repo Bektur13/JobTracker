@@ -25,7 +25,8 @@ router.get('/', async (req: Request, res: Response) => {
 router.patch('/', async (req: Request, res: Response) => {
     try {
         const application = await prisma.application.update({
-            where: { status: }
+            where: { status: { contains: "prisma.io" } },
+            data: { role: "ADMIN" },
         })
     }
 })
