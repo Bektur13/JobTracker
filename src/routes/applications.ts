@@ -1,10 +1,18 @@
 import { Request, Response, Router } from 'express';
 import { prisma } from '@/lib/prisma';
+import { query, validationResult } from 'express-validator';
 
 const router = Router();
 
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', query('company').notEmpty(),async (req: Request, res: Response) => {
     try {
+        const result = validationResult(req);
+
+        if(result.isEmpty()) {
+            return res.send(`Your company: ${req.query.company}`);
+        }
+
+        res.send({ errors: result.array() });
         const application = await prisma.application.create({ data: req.body });
         return res.status(201).json(application);
     } catch {
@@ -12,7 +20,7 @@ router.post('/', async (req: Request, res: Response) => {
     }
 });
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/',async (req: Request, res: Response) => {
     try {
         const application = await prisma.application.findMany();
         return res.status(200).json(application);
