@@ -1,6 +1,6 @@
 import express from 'express';
-
-import applicationsRoutes from '@/routes/applications';
+import { Request, Response, NextFunction } from 'express';
+import applicationsRoutes from '@/routes/applicationsRoutes';
 
 const app = express();
 const port = 3001;
@@ -17,3 +17,9 @@ app.use((err: Error, _req: express.Request, res: express.Response) => {
 app.listen(port, () => {
     console.log(`Server is running on ${port}`);
 });
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.log(err.stack);
+    res.status(500).send('Something brake!');
+    next(err);
+})
