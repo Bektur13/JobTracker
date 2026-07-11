@@ -5,9 +5,6 @@ import { postValidators, patchValidators } from '@/middlewares/applications';
 
 const router = Router();
 
-
-
-
 router.post('/', postValidators, async (req: Request, res: Response) => {
     try {
         const errors = validationResult(req);
