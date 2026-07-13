@@ -1,10 +1,32 @@
+import { useEffect, useState } from "react"
 
 export const ApplicationCard = (company: string, role: string, status: string) => {
+
+    const [data, setData] = useState([]);
+
+    
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:3001/applications');
+
+                if(!response.ok) {
+                    throw new Error('I can not fetch data');
+                }
+
+                const result = await response.json();
+                setData(result);
+            }catch(e) {
+                console.log(e);
+            }
+        }
+        fetchData();
+    })
     return (
         <ul>
-            <li>Google, Software Engineer, applied</li>
-            <li>Amazon, Software Engineer, interviewing</li>
-            <li>Netflix, Software Engineer, rejected</li>
+            {data.map(application => (
+                <li key={application}>{application}</li>
+            ))}
         </ul>
     )
 }
