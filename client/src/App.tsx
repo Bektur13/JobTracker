@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
+import { ApplicationCard } from './components/applicationCard'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -111,6 +112,7 @@ function App() {
             </li>
           </ul>
         </div>
+        <ApplicationCard />
       </section>
 
       <div className="ticks"></div>

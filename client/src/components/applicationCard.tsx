@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-export const ApplicationCard = (company: string, role: string, status: string) => {
+export const ApplicationCard = () => {
 
     const [data, setData] = useState([]);
 
