@@ -1,15 +1,10 @@
 import { NextResponse, NextRequest } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 export async function GET(request: NextRequest, { params }: {params: Promise<{ id: string}>}) {
-    const { id } = await params;
-
-    const { searchParams } = new URL(request.url);
-    const searchQuery = searchParams.get('search');
+    const application = await prisma.application.findMany();
     
-    return NextResponse.json({    
-      message: "Product fetched successfully",
-      productId: id,
-      searchFilter: searchQuery || "none"
-    },
+    const { id } = await params;
+    return NextResponse.json(application,
     { status: 200 })
 }
