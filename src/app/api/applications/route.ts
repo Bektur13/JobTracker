@@ -1,25 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { company, role, status, notes, skills} = body;
-        if(!company || !role || !status || !notes || !skills) {
-            return NextResponse.json(
-                { error: 'Missing required fields'},
-                { status: 400 }
-            )
-        }
+        const newApplication = await prisma.application.create({
+            data: {
+                company: body.company,
+                role: body.role,
+                status: body.status,
+                notes: body.notes,
+                skills: body.skills
+            }
+        });
 
-        return NextResponse.json(
-            { 
-                message: 'Application created successfulluy!',
-                data: {company, role, status, notes, skills
-            }}
-        )
+        return NextResponse.json(newApplication, { status: 201 });
     }catch(e) {
-        return NextResponse.json({
-            error: "Invalid JSON format"
-        }, { status: 400 })
+        return NextResponse.json({ e: 'Failed to create application '}, { status: 500 });
     }
 }
