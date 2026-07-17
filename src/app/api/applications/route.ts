@@ -11,6 +11,7 @@ export async function POST(request: NextRequest) {
                 status: body.status,
                 notes: body.notes,
                 skills: body.skills
+        
             }
         });
 
