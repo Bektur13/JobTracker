@@ -14,12 +14,87 @@ generator client {
 
 
 
-model Application {
-  id Int  @id @default(autoincrement())
-  company  String 
-  role  String
-  status  String  @default("applied")
-  date_applied  DateTime  @default(now())
-  notes String?
-  skills  String[]
+enum Stage {
+  APPLIED
+  SCREENING
+  TECHNICAL
+  OFFER
+  REJECTED
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  applications JobApplication[]
+  contacts     Contact[]
+  notes        Note[]
+}
+
+model Company {
+  id        String   @id @default(cuid())
+  name      String
+  website   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  applications JobApplication[]
+  contacts     Contact[]
+}
+
+model JobApplication {
+  id           String   @id @default(cuid())
+  role         String
+  stage        Stage    @default(APPLIED)
+  dateApplied  DateTime @default(now())
+  skills       String[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id])
+
+  contacts Contact[]
+  notes    Note[]
+}
+
+model Contact {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?
+  phone     String?
+  title     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  companyId String?
+  company   Company? @relation(fields: [companyId], references: [id])
+
+  applications JobApplication[]
+  notes        Note[]
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  applicationId String?
+  application   JobApplication? @relation(fields: [applicationId], references: [id])
+
+  contactId String?
+  contact   Contact? @relation(fields: [contactId], references: [id])
 }
