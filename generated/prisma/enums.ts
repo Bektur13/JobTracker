@@ -9,7 +9,12 @@
 * 🟢 You can import this file directly.
 */
 
+export const Stage = {
+  APPLIED: 'APPLIED',
+  SCREENING: 'SCREENING',
+  TECHNICAL: 'TECHNICAL',
+  OFFER: 'OFFER',
+  REJECTED: 'REJECTED'
+} as const
 
-
-// This file is empty because there are no enums in the schema.
-export {}
+export type Stage = (typeof Stage)[keyof typeof Stage]

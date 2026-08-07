@@ -8,5 +8,9 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/Application'
+export type * from './models/User'
+export type * from './models/Company'
+export type * from './models/JobApplication'
+export type * from './models/Contact'
+export type * from './models/Note'
 export type * from './commonInputTypes'
