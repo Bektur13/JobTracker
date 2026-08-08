@@ -3,11 +3,14 @@ import { prisma } from '@/lib/prisma';
 import { Prisma, Stage } from '../../generated/prisma/client';
 import { validationResult } from 'express-validator';
 import { postValidators, getValidators, stageValidators } from '@/middlewares/applications';
+import { resolveDbUser } from '@/middlewares/auth';
 
 const router = Router();
 
 const SORTABLE_FIELDS = ['dateApplied', 'createdAt', 'updatedAt', 'role'] as const;
 type SortableField = (typeof SORTABLE_FIELDS)[number];
+
+router.use(resolveDbUser);
 
 router.get('/', getValidators, async (req: Request, res: Response) => {
     try {
@@ -17,14 +20,13 @@ router.get('/', getValidators, async (req: Request, res: Response) => {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { stage, userId, companyId, role, sortBy, order } = req.query as Record<string, string | undefined>;
+        const { stage, companyId, role, sortBy, order } = req.query as Record<string, string | undefined>;
 
         const page = Math.max(parseInt(req.query.page as string, 10) || 1, 1);
         const pageSize = Math.min(Math.max(parseInt(req.query.pageSize as string, 10) || 20, 1), 100);
 
-        const where: Prisma.JobApplicationWhereInput = {};
+        const where: Prisma.JobApplicationWhereInput = { userId: req.dbUser!.id };
         if (stage) where.stage = stage as Stage;
-        if (userId) where.userId = userId;
         if (companyId) where.companyId = companyId;
         if (role) where.role = { contains: role, mode: 'insensitive' };
 
@@ -66,13 +68,13 @@ router.post('/', postValidators, async (req: Request, res: Response) => {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { role, userId, companyId, stage, skills, dateApplied } = req.body;
+        const { role, companyId, stage, skills, dateApplied } = req.body;
 
         const application = await prisma.jobApplication.create({
             data: {
                 role,
-                userId,
                 companyId,
+                userId: req.dbUser!.id,
                 stage: stage ?? Stage.APPLIED,
                 skills: skills ?? [],
                 ...(dateApplied ? { dateApplied: new Date(dateApplied) } : {}),
@@ -94,6 +96,15 @@ router.patch('/:id/stage', stageValidators, async (req: Request, res: Response) 
 
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
+        }
+
+        const existing = await prisma.jobApplication.findFirst({
+            where: { id, userId: req.dbUser!.id },
+            select: { id: true },
+        });
+
+        if (!existing) {
+            return res.status(404).json({ error: 'Application not found' });
         }
 
         const application = await prisma.jobApplication.update({

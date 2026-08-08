@@ -1,25 +1,23 @@
 import express from 'express';
+import 'dotenv/config';
 import { Request, Response, NextFunction } from 'express';
 import applicationsRoutes from '@/routes/applicationsRoutes';
+import { clerkMiddleware } from '@clerk/express';
 
 const app = express();
 const port = process.env.PORT;
 
 app.use(express.json());
+app.use(clerkMiddleware());
 
 app.use('/applications', applicationsRoutes);
 
-app.use((err: Error, _req: express.Request, res: express.Response) => {
-    console.error('Express error handler:', err);
-    res.status(500).json({ error: err.message });
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- Express requires 4 params to detect error-handling middleware
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+    console.error('Express error handler:', err.stack);
+    res.status(500).json({ error: 'Internal server error' });
 });
 
 app.listen(port, () => {
     console.log(`Server is running on ${port}`);
 });
-
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.log(err.stack);
-    res.status(500).send('Something brake!');
-    next(err);
-})

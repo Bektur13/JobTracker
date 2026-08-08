@@ -6,7 +6,6 @@ const SORTABLE_FIELDS = ['dateApplied', 'createdAt', 'updatedAt', 'role'];
 
 export const postValidators = [
     body('role').notEmpty().withMessage('Role is required'),
-    body('userId').notEmpty().withMessage('userId is required'),
     body('companyId').notEmpty().withMessage('companyId is required'),
     body('stage').optional().isIn(STAGE_VALUES).withMessage(`Stage must be one of: ${STAGE_VALUES.join(', ')}`),
     body('skills').optional().isArray().withMessage('skills must be an array of strings'),
@@ -16,7 +15,6 @@ export const postValidators = [
 
 export const getValidators = [
     query('stage').optional().isIn(STAGE_VALUES).withMessage(`Stage must be one of: ${STAGE_VALUES.join(', ')}`),
-    query('userId').optional().isString(),
     query('companyId').optional().isString(),
     query('role').optional().isString(),
     query('sortBy').optional().isIn(SORTABLE_FIELDS).withMessage(`sortBy must be one of: ${SORTABLE_FIELDS.join(', ')}`),
