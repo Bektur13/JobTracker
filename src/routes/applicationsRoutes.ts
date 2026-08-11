@@ -4,6 +4,7 @@ import { Prisma, Stage } from '../../generated/prisma/client';
 import { validationResult } from 'express-validator';
 import { postValidators, getValidators, stageValidators, idParamValidators, patchValidators } from '@/middlewares/applications';
 import { resolveDbUser } from '@/middlewares/auth';
+import { findOrCreateCompanyByName } from '@/lib/companies';
 
 const router = Router();
 
@@ -68,15 +69,21 @@ router.post('/', postValidators, async (req: Request, res: Response) => {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { role, companyId, stage, skills, dateApplied } = req.body;
+        const {
+            role, companyId, companyName, stage, skills, dateApplied,
+            location, salaryRange, description, sourceUrl, source,
+        } = req.body;
+
+        const resolvedCompanyId = companyId ?? (await findOrCreateCompanyByName(companyName)).id;
 
         const application = await prisma.jobApplication.create({
             data: {
                 role,
-                companyId,
+                companyId: resolvedCompanyId,
                 userId: req.dbUser!.id,
                 stage: stage ?? Stage.APPLIED,
                 skills: skills ?? [],
+                location, salaryRange, description, sourceUrl, source,
                 ...(dateApplied ? { dateApplied: new Date(dateApplied) } : {}),
             },
         });

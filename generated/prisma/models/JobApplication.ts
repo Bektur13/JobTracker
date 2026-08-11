@@ -29,6 +29,11 @@ export type JobApplicationMinAggregateOutputType = {
   role: string | null
   stage: $Enums.Stage | null
   dateApplied: Date | null
+  location: string | null
+  salaryRange: string | null
+  description: string | null
+  sourceUrl: string | null
+  source: string | null
   createdAt: Date | null
   updatedAt: Date | null
   userId: string | null
@@ -40,6 +45,11 @@ export type JobApplicationMaxAggregateOutputType = {
   role: string | null
   stage: $Enums.Stage | null
   dateApplied: Date | null
+  location: string | null
+  salaryRange: string | null
+  description: string | null
+  sourceUrl: string | null
+  source: string | null
   createdAt: Date | null
   updatedAt: Date | null
   userId: string | null
@@ -52,6 +62,11 @@ export type JobApplicationCountAggregateOutputType = {
   stage: number
   dateApplied: number
   skills: number
+  location: number
+  salaryRange: number
+  description: number
+  sourceUrl: number
+  source: number
   createdAt: number
   updatedAt: number
   userId: number
@@ -65,6 +80,11 @@ export type JobApplicationMinAggregateInputType = {
   role?: true
   stage?: true
   dateApplied?: true
+  location?: true
+  salaryRange?: true
+  description?: true
+  sourceUrl?: true
+  source?: true
   createdAt?: true
   updatedAt?: true
   userId?: true
@@ -76,6 +96,11 @@ export type JobApplicationMaxAggregateInputType = {
   role?: true
   stage?: true
   dateApplied?: true
+  location?: true
+  salaryRange?: true
+  description?: true
+  sourceUrl?: true
+  source?: true
   createdAt?: true
   updatedAt?: true
   userId?: true
@@ -88,6 +113,11 @@ export type JobApplicationCountAggregateInputType = {
   stage?: true
   dateApplied?: true
   skills?: true
+  location?: true
+  salaryRange?: true
+  description?: true
+  sourceUrl?: true
+  source?: true
   createdAt?: true
   updatedAt?: true
   userId?: true
@@ -173,6 +203,11 @@ export type JobApplicationGroupByOutputType = {
   stage: $Enums.Stage
   dateApplied: Date
   skills: string[]
+  location: string | null
+  salaryRange: string | null
+  description: string | null
+  sourceUrl: string | null
+  source: string | null
   createdAt: Date
   updatedAt: Date
   userId: string
@@ -206,6 +241,11 @@ export type JobApplicationWhereInput = {
   stage?: Prisma.EnumStageFilter<"JobApplication"> | $Enums.Stage
   dateApplied?: Prisma.DateTimeFilter<"JobApplication"> | Date | string
   skills?: Prisma.StringNullableListFilter<"JobApplication">
+  location?: Prisma.StringNullableFilter<"JobApplication"> | string | null
+  salaryRange?: Prisma.StringNullableFilter<"JobApplication"> | string | null
+  description?: Prisma.StringNullableFilter<"JobApplication"> | string | null
+  sourceUrl?: Prisma.StringNullableFilter<"JobApplication"> | string | null
+  source?: Prisma.StringNullableFilter<"JobApplication"> | string | null
   createdAt?: Prisma.DateTimeFilter<"JobApplication"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"JobApplication"> | Date | string
   userId?: Prisma.StringFilter<"JobApplication"> | string
@@ -222,6 +262,11 @@ export type JobApplicationOrderByWithRelationInput = {
   stage?: Prisma.SortOrder
   dateApplied?: Prisma.SortOrder
   skills?: Prisma.SortOrder
+  location?: Prisma.SortOrderInput | Prisma.SortOrder
+  salaryRange?: Prisma.SortOrderInput | Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  source?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -241,6 +286,11 @@ export type JobApplicationWhereUniqueInput = Prisma.AtLeast<{
   stage?: Prisma.EnumStageFilter<"JobApplication"> | $Enums.Stage
   dateApplied?: Prisma.DateTimeFilter<"JobApplication"> | Date | string
   skills?: Prisma.StringNullableListFilter<"JobApplication">
+  location?: Prisma.StringNullableFilter<"JobApplication"> | string | null
+  salaryRange?: Prisma.StringNullableFilter<"JobApplication"> | string | null
+  description?: Prisma.StringNullableFilter<"JobApplication"> | string | null
+  sourceUrl?: Prisma.StringNullableFilter<"JobApplication"> | string | null
+  source?: Prisma.StringNullableFilter<"JobApplication"> | string | null
   createdAt?: Prisma.DateTimeFilter<"JobApplication"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"JobApplication"> | Date | string
   userId?: Prisma.StringFilter<"JobApplication"> | string
@@ -257,6 +307,11 @@ export type JobApplicationOrderByWithAggregationInput = {
   stage?: Prisma.SortOrder
   dateApplied?: Prisma.SortOrder
   skills?: Prisma.SortOrder
+  location?: Prisma.SortOrderInput | Prisma.SortOrder
+  salaryRange?: Prisma.SortOrderInput | Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  source?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -275,6 +330,11 @@ export type JobApplicationScalarWhereWithAggregatesInput = {
   stage?: Prisma.EnumStageWithAggregatesFilter<"JobApplication"> | $Enums.Stage
   dateApplied?: Prisma.DateTimeWithAggregatesFilter<"JobApplication"> | Date | string
   skills?: Prisma.StringNullableListFilter<"JobApplication">
+  location?: Prisma.StringNullableWithAggregatesFilter<"JobApplication"> | string | null
+  salaryRange?: Prisma.StringNullableWithAggregatesFilter<"JobApplication"> | string | null
+  description?: Prisma.StringNullableWithAggregatesFilter<"JobApplication"> | string | null
+  sourceUrl?: Prisma.StringNullableWithAggregatesFilter<"JobApplication"> | string | null
+  source?: Prisma.StringNullableWithAggregatesFilter<"JobApplication"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"JobApplication"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"JobApplication"> | Date | string
   userId?: Prisma.StringWithAggregatesFilter<"JobApplication"> | string
@@ -287,6 +347,11 @@ export type JobApplicationCreateInput = {
   stage?: $Enums.Stage
   dateApplied?: Date | string
   skills?: Prisma.JobApplicationCreateskillsInput | string[]
+  location?: string | null
+  salaryRange?: string | null
+  description?: string | null
+  sourceUrl?: string | null
+  source?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutApplicationsInput
@@ -301,6 +366,11 @@ export type JobApplicationUncheckedCreateInput = {
   stage?: $Enums.Stage
   dateApplied?: Date | string
   skills?: Prisma.JobApplicationCreateskillsInput | string[]
+  location?: string | null
+  salaryRange?: string | null
+  description?: string | null
+  sourceUrl?: string | null
+  source?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
@@ -315,6 +385,11 @@ export type JobApplicationUpdateInput = {
   stage?: Prisma.EnumStageFieldUpdateOperationsInput | $Enums.Stage
   dateApplied?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobApplicationUpdateskillsInput | string[]
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryRange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutApplicationsNestedInput
@@ -329,6 +404,11 @@ export type JobApplicationUncheckedUpdateInput = {
   stage?: Prisma.EnumStageFieldUpdateOperationsInput | $Enums.Stage
   dateApplied?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobApplicationUpdateskillsInput | string[]
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryRange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -343,6 +423,11 @@ export type JobApplicationCreateManyInput = {
   stage?: $Enums.Stage
   dateApplied?: Date | string
   skills?: Prisma.JobApplicationCreateskillsInput | string[]
+  location?: string | null
+  salaryRange?: string | null
+  description?: string | null
+  sourceUrl?: string | null
+  source?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
@@ -355,6 +440,11 @@ export type JobApplicationUpdateManyMutationInput = {
   stage?: Prisma.EnumStageFieldUpdateOperationsInput | $Enums.Stage
   dateApplied?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobApplicationUpdateskillsInput | string[]
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryRange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -365,6 +455,11 @@ export type JobApplicationUncheckedUpdateManyInput = {
   stage?: Prisma.EnumStageFieldUpdateOperationsInput | $Enums.Stage
   dateApplied?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobApplicationUpdateskillsInput | string[]
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryRange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -395,6 +490,11 @@ export type JobApplicationCountOrderByAggregateInput = {
   stage?: Prisma.SortOrder
   dateApplied?: Prisma.SortOrder
   skills?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  salaryRange?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  sourceUrl?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -406,6 +506,11 @@ export type JobApplicationMaxOrderByAggregateInput = {
   role?: Prisma.SortOrder
   stage?: Prisma.SortOrder
   dateApplied?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  salaryRange?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  sourceUrl?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -417,6 +522,11 @@ export type JobApplicationMinOrderByAggregateInput = {
   role?: Prisma.SortOrder
   stage?: Prisma.SortOrder
   dateApplied?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  salaryRange?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  sourceUrl?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -585,6 +695,11 @@ export type JobApplicationCreateWithoutUserInput = {
   stage?: $Enums.Stage
   dateApplied?: Date | string
   skills?: Prisma.JobApplicationCreateskillsInput | string[]
+  location?: string | null
+  salaryRange?: string | null
+  description?: string | null
+  sourceUrl?: string | null
+  source?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   company: Prisma.CompanyCreateNestedOneWithoutApplicationsInput
@@ -598,6 +713,11 @@ export type JobApplicationUncheckedCreateWithoutUserInput = {
   stage?: $Enums.Stage
   dateApplied?: Date | string
   skills?: Prisma.JobApplicationCreateskillsInput | string[]
+  location?: string | null
+  salaryRange?: string | null
+  description?: string | null
+  sourceUrl?: string | null
+  source?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   companyId: string
@@ -640,6 +760,11 @@ export type JobApplicationScalarWhereInput = {
   stage?: Prisma.EnumStageFilter<"JobApplication"> | $Enums.Stage
   dateApplied?: Prisma.DateTimeFilter<"JobApplication"> | Date | string
   skills?: Prisma.StringNullableListFilter<"JobApplication">
+  location?: Prisma.StringNullableFilter<"JobApplication"> | string | null
+  salaryRange?: Prisma.StringNullableFilter<"JobApplication"> | string | null
+  description?: Prisma.StringNullableFilter<"JobApplication"> | string | null
+  sourceUrl?: Prisma.StringNullableFilter<"JobApplication"> | string | null
+  source?: Prisma.StringNullableFilter<"JobApplication"> | string | null
   createdAt?: Prisma.DateTimeFilter<"JobApplication"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"JobApplication"> | Date | string
   userId?: Prisma.StringFilter<"JobApplication"> | string
@@ -652,6 +777,11 @@ export type JobApplicationCreateWithoutCompanyInput = {
   stage?: $Enums.Stage
   dateApplied?: Date | string
   skills?: Prisma.JobApplicationCreateskillsInput | string[]
+  location?: string | null
+  salaryRange?: string | null
+  description?: string | null
+  sourceUrl?: string | null
+  source?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutApplicationsInput
@@ -665,6 +795,11 @@ export type JobApplicationUncheckedCreateWithoutCompanyInput = {
   stage?: $Enums.Stage
   dateApplied?: Date | string
   skills?: Prisma.JobApplicationCreateskillsInput | string[]
+  location?: string | null
+  salaryRange?: string | null
+  description?: string | null
+  sourceUrl?: string | null
+  source?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
@@ -704,6 +839,11 @@ export type JobApplicationCreateWithoutContactsInput = {
   stage?: $Enums.Stage
   dateApplied?: Date | string
   skills?: Prisma.JobApplicationCreateskillsInput | string[]
+  location?: string | null
+  salaryRange?: string | null
+  description?: string | null
+  sourceUrl?: string | null
+  source?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutApplicationsInput
@@ -717,6 +857,11 @@ export type JobApplicationUncheckedCreateWithoutContactsInput = {
   stage?: $Enums.Stage
   dateApplied?: Date | string
   skills?: Prisma.JobApplicationCreateskillsInput | string[]
+  location?: string | null
+  salaryRange?: string | null
+  description?: string | null
+  sourceUrl?: string | null
+  source?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
@@ -751,6 +896,11 @@ export type JobApplicationCreateWithoutNotesInput = {
   stage?: $Enums.Stage
   dateApplied?: Date | string
   skills?: Prisma.JobApplicationCreateskillsInput | string[]
+  location?: string | null
+  salaryRange?: string | null
+  description?: string | null
+  sourceUrl?: string | null
+  source?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutApplicationsInput
@@ -764,6 +914,11 @@ export type JobApplicationUncheckedCreateWithoutNotesInput = {
   stage?: $Enums.Stage
   dateApplied?: Date | string
   skills?: Prisma.JobApplicationCreateskillsInput | string[]
+  location?: string | null
+  salaryRange?: string | null
+  description?: string | null
+  sourceUrl?: string | null
+  source?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
@@ -793,6 +948,11 @@ export type JobApplicationUpdateWithoutNotesInput = {
   stage?: Prisma.EnumStageFieldUpdateOperationsInput | $Enums.Stage
   dateApplied?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobApplicationUpdateskillsInput | string[]
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryRange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutApplicationsNestedInput
@@ -806,6 +966,11 @@ export type JobApplicationUncheckedUpdateWithoutNotesInput = {
   stage?: Prisma.EnumStageFieldUpdateOperationsInput | $Enums.Stage
   dateApplied?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobApplicationUpdateskillsInput | string[]
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryRange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -819,6 +984,11 @@ export type JobApplicationCreateManyUserInput = {
   stage?: $Enums.Stage
   dateApplied?: Date | string
   skills?: Prisma.JobApplicationCreateskillsInput | string[]
+  location?: string | null
+  salaryRange?: string | null
+  description?: string | null
+  sourceUrl?: string | null
+  source?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   companyId: string
@@ -830,6 +1000,11 @@ export type JobApplicationUpdateWithoutUserInput = {
   stage?: Prisma.EnumStageFieldUpdateOperationsInput | $Enums.Stage
   dateApplied?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobApplicationUpdateskillsInput | string[]
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryRange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutApplicationsNestedInput
@@ -843,6 +1018,11 @@ export type JobApplicationUncheckedUpdateWithoutUserInput = {
   stage?: Prisma.EnumStageFieldUpdateOperationsInput | $Enums.Stage
   dateApplied?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobApplicationUpdateskillsInput | string[]
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryRange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -856,6 +1036,11 @@ export type JobApplicationUncheckedUpdateManyWithoutUserInput = {
   stage?: Prisma.EnumStageFieldUpdateOperationsInput | $Enums.Stage
   dateApplied?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobApplicationUpdateskillsInput | string[]
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryRange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -867,6 +1052,11 @@ export type JobApplicationCreateManyCompanyInput = {
   stage?: $Enums.Stage
   dateApplied?: Date | string
   skills?: Prisma.JobApplicationCreateskillsInput | string[]
+  location?: string | null
+  salaryRange?: string | null
+  description?: string | null
+  sourceUrl?: string | null
+  source?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
@@ -878,6 +1068,11 @@ export type JobApplicationUpdateWithoutCompanyInput = {
   stage?: Prisma.EnumStageFieldUpdateOperationsInput | $Enums.Stage
   dateApplied?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobApplicationUpdateskillsInput | string[]
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryRange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutApplicationsNestedInput
@@ -891,6 +1086,11 @@ export type JobApplicationUncheckedUpdateWithoutCompanyInput = {
   stage?: Prisma.EnumStageFieldUpdateOperationsInput | $Enums.Stage
   dateApplied?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobApplicationUpdateskillsInput | string[]
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryRange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -904,6 +1104,11 @@ export type JobApplicationUncheckedUpdateManyWithoutCompanyInput = {
   stage?: Prisma.EnumStageFieldUpdateOperationsInput | $Enums.Stage
   dateApplied?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobApplicationUpdateskillsInput | string[]
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryRange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -915,6 +1120,11 @@ export type JobApplicationUpdateWithoutContactsInput = {
   stage?: Prisma.EnumStageFieldUpdateOperationsInput | $Enums.Stage
   dateApplied?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobApplicationUpdateskillsInput | string[]
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryRange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutApplicationsNestedInput
@@ -928,6 +1138,11 @@ export type JobApplicationUncheckedUpdateWithoutContactsInput = {
   stage?: Prisma.EnumStageFieldUpdateOperationsInput | $Enums.Stage
   dateApplied?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobApplicationUpdateskillsInput | string[]
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryRange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -941,6 +1156,11 @@ export type JobApplicationUncheckedUpdateManyWithoutContactsInput = {
   stage?: Prisma.EnumStageFieldUpdateOperationsInput | $Enums.Stage
   dateApplied?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   skills?: Prisma.JobApplicationUpdateskillsInput | string[]
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryRange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -993,6 +1213,11 @@ export type JobApplicationSelect<ExtArgs extends runtime.Types.Extensions.Intern
   stage?: boolean
   dateApplied?: boolean
   skills?: boolean
+  location?: boolean
+  salaryRange?: boolean
+  description?: boolean
+  sourceUrl?: boolean
+  source?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
@@ -1010,6 +1235,11 @@ export type JobApplicationSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   stage?: boolean
   dateApplied?: boolean
   skills?: boolean
+  location?: boolean
+  salaryRange?: boolean
+  description?: boolean
+  sourceUrl?: boolean
+  source?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
@@ -1024,6 +1254,11 @@ export type JobApplicationSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   stage?: boolean
   dateApplied?: boolean
   skills?: boolean
+  location?: boolean
+  salaryRange?: boolean
+  description?: boolean
+  sourceUrl?: boolean
+  source?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
@@ -1038,13 +1273,18 @@ export type JobApplicationSelectScalar = {
   stage?: boolean
   dateApplied?: boolean
   skills?: boolean
+  location?: boolean
+  salaryRange?: boolean
+  description?: boolean
+  sourceUrl?: boolean
+  source?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
   companyId?: boolean
 }
 
-export type JobApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "role" | "stage" | "dateApplied" | "skills" | "createdAt" | "updatedAt" | "userId" | "companyId", ExtArgs["result"]["jobApplication"]>
+export type JobApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "role" | "stage" | "dateApplied" | "skills" | "location" | "salaryRange" | "description" | "sourceUrl" | "source" | "createdAt" | "updatedAt" | "userId" | "companyId", ExtArgs["result"]["jobApplication"]>
 export type JobApplicationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
@@ -1075,6 +1315,11 @@ export type $JobApplicationPayload<ExtArgs extends runtime.Types.Extensions.Inte
     stage: $Enums.Stage
     dateApplied: Date
     skills: string[]
+    location: string | null
+    salaryRange: string | null
+    description: string | null
+    sourceUrl: string | null
+    source: string | null
     createdAt: Date
     updatedAt: Date
     userId: string
@@ -1511,6 +1756,11 @@ export interface JobApplicationFieldRefs {
   readonly stage: Prisma.FieldRef<"JobApplication", 'Stage'>
   readonly dateApplied: Prisma.FieldRef<"JobApplication", 'DateTime'>
   readonly skills: Prisma.FieldRef<"JobApplication", 'String[]'>
+  readonly location: Prisma.FieldRef<"JobApplication", 'String'>
+  readonly salaryRange: Prisma.FieldRef<"JobApplication", 'String'>
+  readonly description: Prisma.FieldRef<"JobApplication", 'String'>
+  readonly sourceUrl: Prisma.FieldRef<"JobApplication", 'String'>
+  readonly source: Prisma.FieldRef<"JobApplication", 'String'>
   readonly createdAt: Prisma.FieldRef<"JobApplication", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"JobApplication", 'DateTime'>
   readonly userId: Prisma.FieldRef<"JobApplication", 'String'>

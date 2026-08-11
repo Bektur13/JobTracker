@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>CareerTrack Job Clipper</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <h1>CareerTrack</h1>
+
+    <section id="keySetup" class="hidden">
+      <p>Paste your API key from <strong>localhost:3000/settings</strong>:</p>
+      <input id="apiKeyInput" type="text" placeholder="ctk_..." />
+      <button id="saveKeyBtn">Save key</button>
+    </section>
+
+    <section id="main" class="hidden">
+      <button id="parseBtn">Save this posting to CareerTrack</button>
+    </section>
+
+    <section id="preview" class="hidden">
+      <label>Title <input id="fieldTitle" type="text" /></label>
+      <label>Company <input id="fieldCompany" type="text" /></label>
+      <label>Location <input id="fieldLocation" type="text" /></label>
+      <label>Salary <input id="fieldSalary" type="text" /></label>
+      <label>Description <textarea id="fieldDescription" rows="4"></textarea></label>
+      <div class="actions">
+        <button id="confirmBtn">Confirm & Save</button>
+        <button id="cancelBtn" class="secondary">Cancel</button>
+      </div>
+    </section>
+
+    <p id="status"></p>
+
+    <script src="../lib/storage.js"></script>
+    <script src="../lib/api.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

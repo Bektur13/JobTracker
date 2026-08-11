@@ -79,6 +79,7 @@ export const UserScalarFieldEnum = {
   clerkId: 'clerkId',
   email: 'email',
   name: 'name',
+  apiKey: 'apiKey',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -103,6 +104,11 @@ export const JobApplicationScalarFieldEnum = {
   stage: 'stage',
   dateApplied: 'dateApplied',
   skills: 'skills',
+  location: 'location',
+  salaryRange: 'salaryRange',
+  description: 'description',
+  sourceUrl: 'sourceUrl',
+  source: 'source',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId',

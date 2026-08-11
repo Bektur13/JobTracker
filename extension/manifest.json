@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "CareerTrack Job Clipper",
+  "version": "0.1.0",
+  "description": "Save job postings from Greenhouse, LinkedIn, and Handshake straight into your CareerTrack dashboard.",
+  "action": {
+    "default_popup": "popup/popup.html"
+  },
+  "permissions": ["activeTab", "scripting", "storage"]
+}

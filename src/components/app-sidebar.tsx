@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Briefcase, LayoutDashboard, BarChart3 } from "lucide-react";
+import { Briefcase, LayoutDashboard, BarChart3, Settings } from "lucide-react";
+import { Show, UserButton, SignInButton } from "@clerk/nextjs";
 import {
   Sidebar,
   SidebarContent,
@@ -14,10 +15,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
 
 const NAV_ITEMS = [
   { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { title: "Analytics", href: "/analytics", icon: BarChart3 },
+  { title: "Settings", href: "/settings", icon: Settings },
 ];
 
 export function AppSidebar() {
@@ -61,16 +64,21 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            {/* TODO: swap for Clerk's <UserButton /> (or similar) once sign-in is wired up */}
-            <SidebarMenuButton size="lg" className="cursor-default">
-              <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium">
-                ?
+            <Show when="signed-in">
+              <div className="flex items-center gap-2 px-2 py-1.5">
+                <UserButton />
+                <span className="text-sm font-medium group-data-[collapsible=icon]:hidden">
+                  Account
+                </span>
               </div>
-              <div className="flex flex-col text-left leading-tight">
-                <span className="text-sm font-medium">Account</span>
-                <span className="text-[0.7rem] text-muted-foreground">Not signed in</span>
-              </div>
-            </SidebarMenuButton>
+            </Show>
+            <Show when="signed-out">
+              <SignInButton mode="redirect">
+                <Button variant="outline" size="sm" className="w-full">
+                  Sign in
+                </Button>
+              </SignInButton>
+            </Show>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

@@ -27,6 +27,7 @@ model User {
   clerkId   String   @unique
   email     String   @unique
   name      String?
+  apiKey    String?  @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -52,6 +53,11 @@ model JobApplication {
   stage        Stage    @default(APPLIED)
   dateApplied  DateTime @default(now())
   skills       String[]
+  location     String?
+  salaryRange  String?
+  description  String?
+  sourceUrl    String?
+  source       String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 

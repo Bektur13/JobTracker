@@ -1,12 +1,22 @@
 import express from 'express';
 import 'dotenv/config';
 import { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
 import applicationsRoutes from '@/routes/applicationsRoutes';
 import { clerkMiddleware } from '@clerk/express';
 
 const app = express();
 const port = process.env.PORT;
 
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (origin === 'http://localhost:3000') return callback(null, true);
+        if (origin.startsWith('chrome-extension://')) return callback(null, true);
+        return callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+}));
 app.use(express.json());
 app.use(clerkMiddleware());
 

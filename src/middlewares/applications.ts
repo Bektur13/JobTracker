@@ -3,14 +3,27 @@ import { Stage } from '../../generated/prisma/client';
 
 const STAGE_VALUES = Object.values(Stage);
 const SORTABLE_FIELDS = ['dateApplied', 'createdAt', 'updatedAt', 'role'];
+const SOURCE_VALUES = ['GREENHOUSE', 'LINKEDIN', 'HANDSHAKE', 'MANUAL'];
 
 export const postValidators = [
     body('role').notEmpty().withMessage('Role is required'),
-    body('companyId').notEmpty().withMessage('companyId is required'),
+    body('companyId').optional().isString(),
+    body('companyName').optional().isString(),
+    body().custom((_, { req }) => {
+        if (!req.body.companyId && !req.body.companyName) {
+            throw new Error('companyId or companyName is required');
+        }
+        return true;
+    }),
     body('stage').optional().isIn(STAGE_VALUES).withMessage(`Stage must be one of: ${STAGE_VALUES.join(', ')}`),
     body('skills').optional().isArray().withMessage('skills must be an array of strings'),
     body('skills.*').optional().isString().withMessage('each skill must be a string'),
     body('dateApplied').optional().isISO8601().withMessage('dateApplied must be a valid date'),
+    body('location').optional().isString(),
+    body('salaryRange').optional().isString(),
+    body('description').optional().isString(),
+    body('sourceUrl').optional().isURL().withMessage('sourceUrl must be a valid URL'),
+    body('source').optional().isIn(SOURCE_VALUES).withMessage(`source must be one of: ${SOURCE_VALUES.join(', ')}`),
 ]
 
 export const getValidators = [
