@@ -34,7 +34,7 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     "src/routes/applications.js"
-, "src/seed.js"  ],
+, "src/seed.js", "src/components/kanban/board.tsx"  ],
   "exclude": [
     "node_modules"
   ]

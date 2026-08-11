@@ -27,3 +27,16 @@ export const stageValidators = [
     param('id').notEmpty().withMessage('Application id is required'),
     body('stage').notEmpty().isIn(STAGE_VALUES).withMessage(`Stage must be one of: ${STAGE_VALUES.join(', ')}`),
 ]
+
+export const idParamValidators = [
+    param('id').notEmpty().withMessage('Application id is required'),
+]
+
+export const patchValidators = [
+    param('id').notEmpty().withMessage('Application id is required'),
+    body('role').optional().notEmpty().withMessage('role must not be empty'),
+    body('companyId').optional().notEmpty().withMessage('companyId must not be empty'),
+    body('skills').optional().isArray().withMessage('skills must be an array of strings'),
+    body('skills.*').optional().isString().withMessage('each skill must be a string'),
+    body('dateApplied').optional().isISO8601().withMessage('dateApplied must be a valid date'),
+]
