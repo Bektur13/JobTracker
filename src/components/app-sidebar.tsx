@@ -30,7 +30,7 @@ export function AppSidebar() {
           <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <Briefcase className="size-4" />
           </div>
-          <span className="text-sm font-semibold group-data-[collapsible=icon]:hidden">
+          <span className="font-semibold group-data-[collapsible=icon]:hidden text-sm">
             CareerTrack
           </span>
         </div>
@@ -39,7 +39,8 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-2">
+              <span className="text-xs">Home</span>
               {NAV_ITEMS.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
@@ -48,7 +49,7 @@ export function AppSidebar() {
                     tooltip={item.title}
                   >
                     <item.icon />
-                    <span className="text-base">{item.title}</span>
+                    <span className="text-sm">{item.title}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -66,7 +67,7 @@ export function AppSidebar() {
                 ?
               </div>
               <div className="flex flex-col text-left leading-tight">
-                <span className="text-xs font-medium">Account</span>
+                <span className="text-sm font-medium">Account</span>
                 <span className="text-[0.7rem] text-muted-foreground">Not signed in</span>
               </div>
             </SidebarMenuButton>

@@ -33,38 +33,38 @@ export function AnalyticsDashboard() {
     <div className="space-y-6 p-4">
       {/* Top Stat Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-slate-900 border-slate-800">
+        <Card className="border border-border">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-slate-400">Total Applications</CardTitle>
+            <CardTitle className="text-xs font-medium text-muted-foreground">Total Applications</CardTitle>
             <Target className="w-4 h-4 text-blue-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-slate-100">92</div>
+            <div className="text-2xl font-bold text-card-foreground">92</div>
             <p className="text-xs text-emerald-400 flex items-center gap-1 mt-1">
               <TrendingUp className="w-3 h-3" /> +18% from last month
             </p>
           </CardContent>
         </Card>
 
-        <Card className="bg-slate-900 border-slate-800">
+        <Card className="border border-border">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-slate-400">Interview Rate</CardTitle>
+            <CardTitle className="text-xs font-medium text-muted-foreground">Interview Rate</CardTitle>
             <TrendingUp className="w-4 h-4 text-purple-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-slate-100">30.4%</div>
-            <p className="text-xs text-slate-500 mt-1">28 out of 92 applications</p>
+            <div className="text-2xl font-bold text-card-foreground">30.4%</div>
+            <p className="text-xs text-muted-foreground mt-1">28 out of 92 applications</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-slate-900 border-slate-800">
+        <Card className="border border-border">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-slate-400">Offer Conversion</CardTitle>
+            <CardTitle className="text-xs font-medium text-muted-foreground">Offer Conversion</CardTitle>
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-slate-100">3.2%</div>
-            <p className="text-xs text-slate-500 mt-1">3 active offers received</p>
+            <div className="text-2xl font-bold text-card-foreground">3.2%</div>
+            <p className="text-xs text-muted-foreground mt-1">3 active offers received</p>
           </CardContent>
         </Card>
       </div>
@@ -72,9 +72,9 @@ export function AnalyticsDashboard() {
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Velocity Chart */}
-        <Card className="bg-slate-900 border-slate-800">
+        <Card className="border border-border">
           <CardHeader>
-            <CardTitle className="text-sm font-semibold text-slate-200">Application Submission Velocity</CardTitle>
+            <CardTitle className="text-sm font-semibold text-card-foreground">Application Submission Velocity</CardTitle>
           </CardHeader>
           <CardContent className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -82,8 +82,8 @@ export function AnalyticsDashboard() {
                 <XAxis dataKey="month" stroke="#64748b" fontSize={12} tickLine={false} />
                 <YAxis stroke="#64748b" fontSize={12} tickLine={false} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: "#0f172a", borderColor: "#334155" }}
-                  itemStyle={{ color: "#f8fafc" }}
+                  contentStyle={{ backgroundColor: "var(--card)", borderColor: "var(--border)" }}
+                  itemStyle={{ color: "var(--card-foreground)" }}
                 />
                 <Bar dataKey="applications" fill="#3b82f6" radius={[4, 4, 0, 0]} />
               </BarChart>
@@ -92,9 +92,9 @@ export function AnalyticsDashboard() {
         </Card>
 
         {/* Funnel Chart */}
-        <Card className="bg-slate-900 border-slate-800">
+        <Card className="border border-border">
           <CardHeader>
-            <CardTitle className="text-sm font-semibold text-slate-200">Stage Conversion Funnel</CardTitle>
+            <CardTitle className="text-sm font-semibold text-card-foreground">Stage Conversion Funnel</CardTitle>
           </CardHeader>
           <CardContent className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -102,8 +102,8 @@ export function AnalyticsDashboard() {
                 <XAxis dataKey="stage" stroke="#64748b" fontSize={12} tickLine={false} />
                 <YAxis stroke="#64748b" fontSize={12} tickLine={false} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: "#0f172a", borderColor: "#334155" }}
-                  itemStyle={{ color: "#f8fafc" }}
+                  contentStyle={{ backgroundColor: "var(--card)", borderColor: "var(--border)" }}
+                  itemStyle={{ color: "var(--card-foreground)" }}
                 />
                 <Area type="monotone" dataKey="count" stroke="#a855f7" fill="#a855f7" fillOpacity={0.15} />
               </AreaChart>

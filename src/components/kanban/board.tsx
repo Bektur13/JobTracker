@@ -5,6 +5,8 @@ import {
   DndContext,
   DragOverlay,
   closestCorners,
+  pointerWithin,
+  rectIntersection,
   KeyboardSensor,
   PointerSensor,
   useSensor,
@@ -13,6 +15,7 @@ import {
   DragEndEvent,
   DragOverEvent,
   useDroppable,
+  CollisionDetection,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -102,19 +105,29 @@ export function KanbanBoard({ initialApplications, onApplicationSelect, onStageC
     setActiveApp(null);
   };
 
+  const collisionDetectionStrategy: CollisionDetection = (args) => {
+    const pointerCollisions = pointerWithin(args);
+    if (pointerCollisions.length > 0) return pointerCollisions;
+
+    const intersections = rectIntersection(args);
+    if (intersections.length > 0) return intersections;
+
+    return closestCorners(args);
+  };
+
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCorners}
+      collisionDetection={collisionDetectionStrategy}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 h-full overflow-x-auto p-2">
+      <div className="grid grid-cols-1 md:grid-cols-5 items-start gap-4 overflow-x-auto p-2 bg-card text-card-foreground">
         {STAGES.map((stage) => {
           const stageApps = applications.filter((app) => app.stage === stage.id);
           return (
-            <KanbanColumn
+            <KanbanColumn 
               key={stage.id}
               stage={stage}
               applications={stageApps}
@@ -143,10 +156,10 @@ function KanbanColumn({
   const { setNodeRef } = useDroppable({ id: stage.id });
 
   return (
-    <div ref={setNodeRef} className="flex flex-col rounded-xl bg-slate-900/50 border border-slate-800 p-3 min-w-[260px] h-[calc(100vh-220px)]">
+    <div ref={setNodeRef} className="flex flex-col rounded-xl bg-card border border-border p-3 w-full min-w-[220px] max-w-[300px] max-h-[65vh]">
       <div className="flex items-center justify-between mb-3 px-1">
-        <div className="flex items-center gap-2">
-          <span className="font-semibold text-sm text-slate-200">{stage.label}</span>
+        <div className="flex items-center gap-2 ">
+          <span className="font-semibold text-sm text-card-foreground">{stage.label}</span>
           <Badge variant="outline" className={stage.color}>
             {applications.length}
           </Badge>
@@ -184,15 +197,15 @@ function KanbanCard({ application, isDragging, onClick }: { application: JobAppl
   return (
     <Card
       onClick={onClick}
-      className={`cursor-pointer hover:border-slate-700 bg-slate-950 border-slate-800 transition-all shadow-sm ${
-        isDragging ? "shadow-lg border-blue-500/50 scale-105" : ""
+      className={`cursor-pointer rounded-lg border border-border bg-card text-card-foreground shadow-sm transition-all hover:border-primary/40 ${
+        isDragging ? "scale-105 border-primary/50 shadow-lg" : ""
       }`}
     >
       <CardContent className="p-3.5 space-y-2">
         <div className="flex items-start justify-between gap-2">
           <div>
-            <h4 className="font-semibold text-slate-100 text-sm leading-snug">{application.jobTitle}</h4>
-            <div className="flex items-center gap-1.5 text-slate-400 text-xs mt-0.5">
+            <h4 className="font-semibold text-card-foreground text-sm leading-snug">{application.jobTitle}</h4>
+            <div className="flex items-center gap-1.5 text-muted-foreground text-xs mt-0.5">
               <Building2 className="w-3.5 h-3.5" />
               <span>{application.companyName}</span>
             </div>
@@ -205,7 +218,7 @@ function KanbanCard({ application, isDragging, onClick }: { application: JobAppl
           )}
         </div>
 
-        <div className="flex items-center justify-between pt-1 text-[11px] text-slate-500">
+        <div className="flex items-center justify-between pt-1 text-[11px] text-muted-foreground">
           {application.location && (
             <div className="flex items-center gap-1">
               <MapPin className="w-3 h-3" />
@@ -213,7 +226,7 @@ function KanbanCard({ application, isDragging, onClick }: { application: JobAppl
             </div>
           )}
           {application.salaryRange && (
-            <span className="font-medium text-slate-400">{application.salaryRange}</span>
+            <span className="font-medium text-muted-foreground">{application.salaryRange}</span>
           )}
         </div>
       </CardContent>

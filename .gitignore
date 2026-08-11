@@ -1,4 +1,31 @@
-node_modules
+#Dependencies
+node_modules/
 .env
 .env.local
 .env.*.local
+
+# Next.js build output and cache
+.next/
+out/
+.open-next/
+
+# Express / Production builds
+dist/
+build/
+
+# Logs and Debugging
+*.log
+npm-debug.log*
+
+# TypeScript cache
+*.tsbuildinfo
+.eslintcache
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+
+# IDE and Editors
+.vscode/
+.idea/

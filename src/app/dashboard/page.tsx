@@ -29,7 +29,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex flex-1 flex-col gap-4 bg-background p-6 text-foreground">
+    <div className="flex flex-1 flex-col gap-4 bg-card p-6 text-card-foreground">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-lg font-semibold">Pipeline Board</h1>
