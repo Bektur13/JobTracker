@@ -1,32 +1,49 @@
 // Injected into the page. Depends on lib/jsonld.js + lib/textUtils.js.
 //
-// Handshake is a React SPA with markup that couldn't be verified against a
-// live posting from here — this is a first-pass calibration target, not a
-// finished parser. Prefer [data-testid]/[aria-label] attribute selectors
-// over CSS classes where possible, since SPAs tend to keep test-id/aria
-// attributes stable across styling refactors even when class names churn.
-// When testing against a real posting, console.log() the raw result and
-// patch the selector arrays below before trusting this in production use.
+// Handshake uses styled-components with hashed classes (e.g. "sc-dnHZCe") —
+// confirmed via a live DOM dump on a job-search/<id> detail-pane page, not
+// selector-safe. Durable signals found instead:
+//   - the title <h1> is wrapped in a link to /jobs/<jobId>, and that job id
+//     is also present in the page URL (job-search/<id> or jobs/<id>)
+//   - the company link carries aria-label="<Company Name>" and links to
+//     /e/<id> — read the name off the attribute, not text content
+//   - salary AND location both live together in a section labeled
+//     "At a glance" (found by heading text, not class)
+//   - the description sits in a section labeled "Job description"
 function __ctkParseHandshake() {
   const jsonLd = __ctkExtractJsonLdJobPosting();
 
+  const jobId = location.pathname.match(/\/(?:job-search|jobs)\/(\d+)/)?.[1];
+  const titleLinkEl = jobId ? document.querySelector(`a[href*="/jobs/${jobId}"] h1`) : null;
+
   const title = jsonLd?.title
-    ?? __ctkQueryText(['[data-testid*="job-title"]', '[data-testid*="job"] h1', "h1"]);
+    ?? __ctkCleanWhitespace(titleLinkEl?.textContent)
+    ?? __ctkQueryText(['[data-testid*="job-title"]', '[data-testid*="job"] h1'])
+    ?? __ctkLongestHeading("h1");
 
+  const companyEl = document.querySelector('a[aria-label][href^="/e/"]');
   const company = jsonLd?.company
-    ?? __ctkQueryText(['[data-testid*="employer"]', '[data-testid*="company"]', 'a[href*="/employers/"]']);
+    ?? companyEl?.getAttribute("aria-label")
+    ?? __ctkQueryText(['[data-testid*="employer"]', '[data-testid*="company"]']);
 
-  const location = jsonLd?.location
+  const atAGlanceText = __ctkFindSectionByHeading(/at a glance/i)?.textContent;
+
+  const location_ = jsonLd?.location
+    ?? __ctkScanForLocation(atAGlanceText)
     ?? __ctkQueryText(['[data-testid*="location"]']);
 
-  const mainEl = document.querySelector('main, [role="main"]');
-  const description = jsonLd?.description ?? __ctkStripHtml(mainEl?.innerHTML);
+  const descriptionSection = __ctkFindSectionByHeading(/job description/i);
+  const description = jsonLd?.description
+    ?? __ctkCleanWhitespace(descriptionSection?.textContent)
+    ?? __ctkStripHtml(document.querySelector('main, [role="main"]')?.innerHTML);
 
   return {
     title,
     company,
-    location,
-    salaryRange: jsonLd?.salaryRange ?? __ctkScanForSalary(mainEl?.textContent),
+    location: location_,
+    salaryRange: jsonLd?.salaryRange
+      ?? __ctkScanForSalary(atAGlanceText)
+      ?? __ctkScanForSalary(descriptionSection?.textContent),
     description,
     source: "HANDSHAKE",
   };

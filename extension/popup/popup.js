@@ -66,6 +66,8 @@ document.getElementById("parseBtn").addEventListener("click", async () => {
     ],
   });
 
+  console.log("[CareerTrack] parsed result:", result);
+
   if (!result || result.error) {
     setStatus("Couldn't parse this page. Try a different posting or report the site.");
     return;
