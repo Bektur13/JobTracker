@@ -30,6 +30,8 @@ model User {
   apiKey    String?  @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  connectedCode String? @unique
+  connecteCodeExpiresAt DateTime?
 
   applications JobApplication[]
   contacts     Contact[]
