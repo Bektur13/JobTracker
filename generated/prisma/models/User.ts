@@ -32,6 +32,8 @@ export type UserMinAggregateOutputType = {
   apiKey: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  connectedCode: string | null
+  connecteCodeExpiresAt: Date | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -42,6 +44,8 @@ export type UserMaxAggregateOutputType = {
   apiKey: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  connectedCode: string | null
+  connecteCodeExpiresAt: Date | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -52,6 +56,8 @@ export type UserCountAggregateOutputType = {
   apiKey: number
   createdAt: number
   updatedAt: number
+  connectedCode: number
+  connecteCodeExpiresAt: number
   _all: number
 }
 
@@ -64,6 +70,8 @@ export type UserMinAggregateInputType = {
   apiKey?: true
   createdAt?: true
   updatedAt?: true
+  connectedCode?: true
+  connecteCodeExpiresAt?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -74,6 +82,8 @@ export type UserMaxAggregateInputType = {
   apiKey?: true
   createdAt?: true
   updatedAt?: true
+  connectedCode?: true
+  connecteCodeExpiresAt?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -84,6 +94,8 @@ export type UserCountAggregateInputType = {
   apiKey?: true
   createdAt?: true
   updatedAt?: true
+  connectedCode?: true
+  connecteCodeExpiresAt?: true
   _all?: true
 }
 
@@ -167,6 +179,8 @@ export type UserGroupByOutputType = {
   apiKey: string | null
   createdAt: Date
   updatedAt: Date
+  connectedCode: string | null
+  connecteCodeExpiresAt: Date | null
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -198,6 +212,8 @@ export type UserWhereInput = {
   apiKey?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  connectedCode?: Prisma.StringNullableFilter<"User"> | string | null
+  connecteCodeExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   applications?: Prisma.JobApplicationListRelationFilter
   contacts?: Prisma.ContactListRelationFilter
   notes?: Prisma.NoteListRelationFilter
@@ -211,6 +227,8 @@ export type UserOrderByWithRelationInput = {
   apiKey?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  connectedCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  connecteCodeExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   applications?: Prisma.JobApplicationOrderByRelationAggregateInput
   contacts?: Prisma.ContactOrderByRelationAggregateInput
   notes?: Prisma.NoteOrderByRelationAggregateInput
@@ -221,16 +239,18 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   clerkId?: string
   email?: string
   apiKey?: string
+  connectedCode?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  connecteCodeExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   applications?: Prisma.JobApplicationListRelationFilter
   contacts?: Prisma.ContactListRelationFilter
   notes?: Prisma.NoteListRelationFilter
-}, "id" | "clerkId" | "email" | "apiKey">
+}, "id" | "clerkId" | "email" | "apiKey" | "connectedCode">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -240,6 +260,8 @@ export type UserOrderByWithAggregationInput = {
   apiKey?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  connectedCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  connecteCodeExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -256,6 +278,8 @@ export type UserScalarWhereWithAggregatesInput = {
   apiKey?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  connectedCode?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  connecteCodeExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
 }
 
 export type UserCreateInput = {
@@ -266,6 +290,8 @@ export type UserCreateInput = {
   apiKey?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  connectedCode?: string | null
+  connecteCodeExpiresAt?: Date | string | null
   applications?: Prisma.JobApplicationCreateNestedManyWithoutUserInput
   contacts?: Prisma.ContactCreateNestedManyWithoutUserInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
@@ -279,6 +305,8 @@ export type UserUncheckedCreateInput = {
   apiKey?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  connectedCode?: string | null
+  connecteCodeExpiresAt?: Date | string | null
   applications?: Prisma.JobApplicationUncheckedCreateNestedManyWithoutUserInput
   contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutUserInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
@@ -292,6 +320,8 @@ export type UserUpdateInput = {
   apiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  connectedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  connecteCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   applications?: Prisma.JobApplicationUpdateManyWithoutUserNestedInput
   contacts?: Prisma.ContactUpdateManyWithoutUserNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
@@ -305,6 +335,8 @@ export type UserUncheckedUpdateInput = {
   apiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  connectedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  connecteCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   applications?: Prisma.JobApplicationUncheckedUpdateManyWithoutUserNestedInput
   contacts?: Prisma.ContactUncheckedUpdateManyWithoutUserNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
@@ -318,6 +350,8 @@ export type UserCreateManyInput = {
   apiKey?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  connectedCode?: string | null
+  connecteCodeExpiresAt?: Date | string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -328,6 +362,8 @@ export type UserUpdateManyMutationInput = {
   apiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  connectedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  connecteCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -338,6 +374,8 @@ export type UserUncheckedUpdateManyInput = {
   apiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  connectedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  connecteCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -348,6 +386,8 @@ export type UserCountOrderByAggregateInput = {
   apiKey?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  connectedCode?: Prisma.SortOrder
+  connecteCodeExpiresAt?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -358,6 +398,8 @@ export type UserMaxOrderByAggregateInput = {
   apiKey?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  connectedCode?: Prisma.SortOrder
+  connecteCodeExpiresAt?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -368,6 +410,8 @@ export type UserMinOrderByAggregateInput = {
   apiKey?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  connectedCode?: Prisma.SortOrder
+  connecteCodeExpiresAt?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -385,6 +429,10 @@ export type NullableStringFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type UserCreateNestedOneWithoutApplicationsInput = {
@@ -437,6 +485,8 @@ export type UserCreateWithoutApplicationsInput = {
   apiKey?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  connectedCode?: string | null
+  connecteCodeExpiresAt?: Date | string | null
   contacts?: Prisma.ContactCreateNestedManyWithoutUserInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
 }
@@ -449,6 +499,8 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   apiKey?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  connectedCode?: string | null
+  connecteCodeExpiresAt?: Date | string | null
   contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutUserInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
 }
@@ -477,6 +529,8 @@ export type UserUpdateWithoutApplicationsInput = {
   apiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  connectedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  connecteCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   contacts?: Prisma.ContactUpdateManyWithoutUserNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
 }
@@ -489,6 +543,8 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   apiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  connectedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  connecteCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   contacts?: Prisma.ContactUncheckedUpdateManyWithoutUserNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -501,6 +557,8 @@ export type UserCreateWithoutContactsInput = {
   apiKey?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  connectedCode?: string | null
+  connecteCodeExpiresAt?: Date | string | null
   applications?: Prisma.JobApplicationCreateNestedManyWithoutUserInput
   notes?: Prisma.NoteCreateNestedManyWithoutUserInput
 }
@@ -513,6 +571,8 @@ export type UserUncheckedCreateWithoutContactsInput = {
   apiKey?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  connectedCode?: string | null
+  connecteCodeExpiresAt?: Date | string | null
   applications?: Prisma.JobApplicationUncheckedCreateNestedManyWithoutUserInput
   notes?: Prisma.NoteUncheckedCreateNestedManyWithoutUserInput
 }
@@ -541,6 +601,8 @@ export type UserUpdateWithoutContactsInput = {
   apiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  connectedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  connecteCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   applications?: Prisma.JobApplicationUpdateManyWithoutUserNestedInput
   notes?: Prisma.NoteUpdateManyWithoutUserNestedInput
 }
@@ -553,6 +615,8 @@ export type UserUncheckedUpdateWithoutContactsInput = {
   apiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  connectedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  connecteCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   applications?: Prisma.JobApplicationUncheckedUpdateManyWithoutUserNestedInput
   notes?: Prisma.NoteUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -565,6 +629,8 @@ export type UserCreateWithoutNotesInput = {
   apiKey?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  connectedCode?: string | null
+  connecteCodeExpiresAt?: Date | string | null
   applications?: Prisma.JobApplicationCreateNestedManyWithoutUserInput
   contacts?: Prisma.ContactCreateNestedManyWithoutUserInput
 }
@@ -577,6 +643,8 @@ export type UserUncheckedCreateWithoutNotesInput = {
   apiKey?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  connectedCode?: string | null
+  connecteCodeExpiresAt?: Date | string | null
   applications?: Prisma.JobApplicationUncheckedCreateNestedManyWithoutUserInput
   contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutUserInput
 }
@@ -605,6 +673,8 @@ export type UserUpdateWithoutNotesInput = {
   apiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  connectedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  connecteCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   applications?: Prisma.JobApplicationUpdateManyWithoutUserNestedInput
   contacts?: Prisma.ContactUpdateManyWithoutUserNestedInput
 }
@@ -617,6 +687,8 @@ export type UserUncheckedUpdateWithoutNotesInput = {
   apiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  connectedCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  connecteCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   applications?: Prisma.JobApplicationUncheckedUpdateManyWithoutUserNestedInput
   contacts?: Prisma.ContactUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -678,6 +750,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   apiKey?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  connectedCode?: boolean
+  connecteCodeExpiresAt?: boolean
   applications?: boolean | Prisma.User$applicationsArgs<ExtArgs>
   contacts?: boolean | Prisma.User$contactsArgs<ExtArgs>
   notes?: boolean | Prisma.User$notesArgs<ExtArgs>
@@ -692,6 +766,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   apiKey?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  connectedCode?: boolean
+  connecteCodeExpiresAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -702,6 +778,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   apiKey?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  connectedCode?: boolean
+  connecteCodeExpiresAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -712,9 +790,11 @@ export type UserSelectScalar = {
   apiKey?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  connectedCode?: boolean
+  connecteCodeExpiresAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerkId" | "email" | "name" | "apiKey" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerkId" | "email" | "name" | "apiKey" | "createdAt" | "updatedAt" | "connectedCode" | "connecteCodeExpiresAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   applications?: boolean | Prisma.User$applicationsArgs<ExtArgs>
   contacts?: boolean | Prisma.User$contactsArgs<ExtArgs>
@@ -739,6 +819,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     apiKey: string | null
     createdAt: Date
     updatedAt: Date
+    connectedCode: string | null
+    connecteCodeExpiresAt: Date | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1172,6 +1254,8 @@ export interface UserFieldRefs {
   readonly apiKey: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly connectedCode: Prisma.FieldRef<"User", 'String'>
+  readonly connecteCodeExpiresAt: Prisma.FieldRef<"User", 'DateTime'>
 }
     
 
