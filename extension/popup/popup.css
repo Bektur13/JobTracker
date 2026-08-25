@@ -49,6 +49,11 @@ button.secondary {
   margin-top: 6px;
 }
 
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .actions {
   display: flex;
   flex-direction: column;

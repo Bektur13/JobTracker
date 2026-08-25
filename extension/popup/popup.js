@@ -1,9 +1,10 @@
 const SUPPORTED_HOSTS = ["greenhouse.io", "linkedin.com", "joinhandshake.com"];
 
-const keySetupSection = document.getElementById("keySetup");
+const connectSection = document.getElementById("connect");
 const mainSection = document.getElementById("main");
 const previewSection = document.getElementById("preview");
 const statusEl = document.getElementById("status");
+const connectBtn = document.getElementById("connectBtn");
 
 let currentTabUrl = null;
 let apiKey = null;
@@ -14,7 +15,7 @@ function setStatus(text) {
 }
 
 function showSection(section) {
-  for (const el of [keySetupSection, mainSection, previewSection]) {
+  for (const el of [connectSection, mainSection, previewSection]) {
     el.classList.toggle("hidden", el !== section);
   }
 }
@@ -25,20 +26,38 @@ async function init() {
   apiBase = settings.apiBase;
 
   if (!apiKey) {
-    showSection(keySetupSection);
+    showSection(connectSection);
     return;
   }
 
   showSection(mainSection);
 }
 
-document.getElementById("saveKeyBtn").addEventListener("click", async () => {
-  const value = document.getElementById("apiKeyInput").value.trim();
-  if (!value) return;
-  await ctkSetApiKey(value);
-  apiKey = value;
-  showSection(mainSection);
-  setStatus("Key saved.");
+connectBtn.addEventListener("click", () => {
+  connectBtn.disabled = true;
+  setStatus("Waiting for sign-in...");
+  chrome.runtime.sendMessage({ type: "start-connect" });
+});
+
+// background.js opens the sign-in tab, exchanges the resulting code for an
+// API key, and broadcasts the outcome here — the popup never talks to the
+// web app directly during this flow.
+chrome.runtime.onMessage.addListener((message) => {
+  if (message?.type !== "connect-result") return;
+
+  connectBtn.disabled = false;
+
+  if (!message.ok) {
+    setStatus(`Connection failed: ${message.error ?? "unknown error"}`);
+    return;
+  }
+
+  ctkGetSettings().then((settings) => {
+    apiKey = settings.apiKey;
+    apiBase = settings.apiBase;
+    setStatus("Connected.");
+    showSection(mainSection);
+  });
 });
 
 document.getElementById("parseBtn").addEventListener("click", async () => {
@@ -112,9 +131,14 @@ document.getElementById("confirmBtn").addEventListener("click", async () => {
     setStatus("Saved to CareerTrack.");
     showSection(mainSection);
   } catch (err) {
-    setStatus(err.message.includes("401") || err.message.includes("Unauthorized")
-      ? "Invalid API key — update it in the extension."
-      : `Save failed: ${err.message}`);
+    if (err.message.includes("401") || err.message.includes("Unauthorized")) {
+      apiKey = null;
+      await ctkSetApiKey(null);
+      setStatus("Your connection expired — reconnect your account.");
+      showSection(connectSection);
+      return;
+    }
+    setStatus(`Save failed: ${err.message}`);
   }
 });
 
