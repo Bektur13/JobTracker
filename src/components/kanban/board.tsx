@@ -49,13 +49,13 @@ const STAGES: { id: ApplicationStage; label: string; color: string }[] = [
 ];
 
 interface BoardProps {
-  initialApplications: JobApplication[];
+  applications: JobApplication[];
+  onApplicationsChange: (applications: JobApplication[]) => void;
   onApplicationSelect: (app: JobApplication) => void;
   onStageChange: (appId: string, newStage: ApplicationStage) => void;
 }
 
-export function KanbanBoard({ initialApplications, onApplicationSelect, onStageChange }: BoardProps) {
-  const [applications, setApplications] = useState<JobApplication[]>(initialApplications);
+export function KanbanBoard({ applications, onApplicationsChange, onApplicationSelect, onStageChange }: BoardProps) {
   const [activeApp, setActiveApp] = useState<JobApplication | null>(null);
 
   const sensors = useSensors(
@@ -90,8 +90,8 @@ export function KanbanBoard({ initialApplications, onApplicationSelect, onStageC
     }
 
     if (targetStage && activeItem.stage !== targetStage) {
-      setApplications((prev) =>
-        prev.map((app) => (app.id === activeId ? { ...app, stage: targetStage! } : app))
+      onApplicationsChange(
+        applications.map((app) => (app.id === activeId ? { ...app, stage: targetStage! } : app))
       );
     }
   };
@@ -123,7 +123,7 @@ export function KanbanBoard({ initialApplications, onApplicationSelect, onStageC
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
-      <div className="grid grid-cols-1 md:grid-cols-5 items-start gap-4 overflow-x-auto p-2 bg-card text-card-foreground">
+      <div className="grid w-full grid-cols-1 items-start gap-3 overflow-x-auto p-2 bg-card text-card-foreground sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-5">
         {STAGES.map((stage) => {
           const stageApps = applications.filter((app) => app.stage === stage.id);
           return (
@@ -156,7 +156,7 @@ function KanbanColumn({
   const { setNodeRef } = useDroppable({ id: stage.id });
 
   return (
-    <div ref={setNodeRef} className="flex flex-col rounded-xl bg-card border border-border p-3 w-full min-w-[220px] max-w-[300px] max-h-[65vh]">
+    <div ref={setNodeRef} className="flex flex-col rounded-xl bg-card border border-border p-3 w-full min-w-0 max-h-[45vh] sm:max-h-[55vh] lg:max-h-[65vh]">
       <div className="flex items-center justify-between mb-3 px-1">
         <div className="flex items-center gap-2 ">
           <span className="font-semibold text-sm text-card-foreground">{stage.label}</span>

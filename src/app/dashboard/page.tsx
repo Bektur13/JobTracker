@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { KanbanBoard, JobApplication, ApplicationStage } from "@/components/kanban/board";
 import { ApplicationDetailDrawer } from "@/components/ApplicationDrawer";
+import { AddApplicationDialog } from "@/components/AddApplicationDialog";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -14,8 +15,10 @@ const MOCK_APPLICATIONS: JobApplication[] = [
 ];
 
 export default function DashboardPage() {
+  const [applications, setApplications] = useState<JobApplication[]>(MOCK_APPLICATIONS);
   const [selectedApp, setSelectedApp] = useState<JobApplication | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isAddOpen, setIsAddOpen] = useState(false);
 
   const handleSelectApp = (app: JobApplication) => {
     setSelectedApp(app);
@@ -28,20 +31,25 @@ export default function DashboardPage() {
     // await fetch(`/api/applications/${appId}/stage`, { method: "PATCH", body: JSON.stringify({ stage: newStage }) })
   };
 
+  const handleAddApplication = (application: JobApplication) => {
+    setApplications((prev) => [application, ...prev]);
+  };
+
   return (
-    <div className="flex flex-1 flex-col gap-4 bg-card p-6 text-card-foreground">
-      <div className="flex items-center justify-between">
+    <div className="mx-auto flex w-full max-w-[2000px] flex-1 flex-col gap-4 bg-card p-4 text-card-foreground sm:p-6 lg:p-8">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-lg font-semibold">Pipeline Board</h1>
           <p className="text-sm text-muted-foreground">Track applications across every stage.</p>
         </div>
-        <Button size="sm" className="gap-1 text-xs">
+        <Button size="sm" className="gap-1 self-start text-xs sm:self-auto" onClick={() => setIsAddOpen(true)}>
           <Plus className="w-3.5 h-3.5" /> Add Application
         </Button>
       </div>
 
       <KanbanBoard
-        initialApplications={MOCK_APPLICATIONS}
+        applications={applications}
+        onApplicationsChange={setApplications}
         onApplicationSelect={handleSelectApp}
         onStageChange={handleStageChange}
       />
@@ -51,6 +59,8 @@ export default function DashboardPage() {
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
       />
+
+      <AddApplicationDialog open={isAddOpen} onOpenChange={setIsAddOpen} onAdd={handleAddApplication} />
     </div>
   );
 }
