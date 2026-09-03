@@ -29,6 +29,19 @@ import { Building2, MapPin, AlertCircle, Sparkles } from "lucide-react";
 
 export type ApplicationStage = "APPLIED" | "SCREENING" | "TECHNICAL" | "OFFER" | "REJECTED";
 
+export interface Contact {
+  id: string;
+  name: string;
+  title?: string;
+  email?: string;
+}
+
+export interface ApplicationNote {
+  id: string;
+  text: string;
+  date: string;
+}
+
 export interface JobApplication {
   id: string;
   companyName: string;
@@ -38,6 +51,9 @@ export interface JobApplication {
   salaryRange?: string;
   matchScore?: number;
   updatedAt: string;
+  description?: string;
+  contacts?: Contact[];
+  notes?: ApplicationNote[];
 }
 
 const STAGES: { id: ApplicationStage; label: string; color: string }[] = [

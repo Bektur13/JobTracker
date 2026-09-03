@@ -16,12 +16,17 @@ const MOCK_APPLICATIONS: JobApplication[] = [
 
 export default function DashboardPage() {
   const [applications, setApplications] = useState<JobApplication[]>(MOCK_APPLICATIONS);
-  const [selectedApp, setSelectedApp] = useState<JobApplication | null>(null);
+  const [selectedAppId, setSelectedAppId] = useState<string | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
 
+  // Derived from `applications` (not a separate snapshot) so the open drawer
+  // always reflects the latest data — e.g. a note added here or a stage
+  // changed via drag-and-drop elsewhere never goes stale.
+  const selectedApp = applications.find((app) => app.id === selectedAppId) ?? null;
+
   const handleSelectApp = (app: JobApplication) => {
-    setSelectedApp(app);
+    setSelectedAppId(app.id);
     setIsDrawerOpen(true);
   };
 
@@ -33,6 +38,10 @@ export default function DashboardPage() {
 
   const handleAddApplication = (application: JobApplication) => {
     setApplications((prev) => [application, ...prev]);
+  };
+
+  const handleUpdateApplication = (updated: JobApplication) => {
+    setApplications((prev) => prev.map((app) => (app.id === updated.id ? updated : app)));
   };
 
   return (
@@ -58,6 +67,7 @@ export default function DashboardPage() {
         application={selectedApp}
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
+        onUpdateApplication={handleUpdateApplication}
       />
 
       <AddApplicationDialog open={isAddOpen} onOpenChange={setIsAddOpen} onAdd={handleAddApplication} />

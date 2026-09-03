@@ -44,6 +44,7 @@ export function AddApplicationDialog({ open, onOpenChange, onAdd }: AddApplicati
       companyName: form.companyName.trim(),
       location: form.location.trim() || undefined,
       salaryRange: form.salaryRange.trim() || undefined,
+      description: form.description.trim() || undefined,
       stage: "APPLIED",
       updatedAt: new Date().toISOString().split("T")[0],
     });
