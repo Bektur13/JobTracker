@@ -51,6 +51,7 @@ export interface JobApplication {
   salaryRange?: string;
   matchScore?: number;
   updatedAt: string;
+  dateApplied?: string;
   description?: string;
   contacts?: Contact[];
   notes?: ApplicationNote[];

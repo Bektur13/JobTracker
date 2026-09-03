@@ -3,19 +3,21 @@ const SUPPORTED_HOSTS = ["greenhouse.io", "linkedin.com", "joinhandshake.com"];
 const connectSection = document.getElementById("connect");
 const mainSection = document.getElementById("main");
 const previewSection = document.getElementById("preview");
+const duplicateWarningSection = document.getElementById("duplicateWarning");
 const statusEl = document.getElementById("status");
 const connectBtn = document.getElementById("connectBtn");
 
 let currentTabUrl = null;
 let apiKey = null;
 let apiBase = null;
+let pendingApplication = null;
 
 function setStatus(text) {
   statusEl.textContent = text ?? "";
 }
 
 function showSection(section) {
-  for (const el of [connectSection, mainSection, previewSection]) {
+  for (const el of [connectSection, mainSection, previewSection, duplicateWarningSection]) {
     el.classList.toggle("hidden", el !== section);
   }
 }
@@ -108,9 +110,27 @@ document.getElementById("cancelBtn").addEventListener("click", () => {
   showSection(mainSection);
 });
 
-document.getElementById("confirmBtn").addEventListener("click", async () => {
+async function saveApplication(parsed) {
   setStatus("Saving...");
 
+  try {
+    await ctkSaveApplication(parsed, apiKey, apiBase);
+    setStatus("Saved to CareerTrack.");
+    pendingApplication = null;
+    showSection(mainSection);
+  } catch (err) {
+    if (err.message.includes("401") || err.message.includes("Unauthorized")) {
+      apiKey = null;
+      await ctkSetApiKey(null);
+      setStatus("Your connection expired — reconnect your account.");
+      showSection(connectSection);
+      return;
+    }
+    setStatus(`Save failed: ${err.message}`);
+  }
+}
+
+document.getElementById("confirmBtn").addEventListener("click", async () => {
   const parsed = {
     title: document.getElementById("fieldTitle").value.trim(),
     company: document.getElementById("fieldCompany").value.trim(),
@@ -126,20 +146,41 @@ document.getElementById("confirmBtn").addEventListener("click", async () => {
     return;
   }
 
+  setStatus("Checking for duplicates...");
+
   try {
-    await ctkSaveApplication(parsed, apiKey, apiBase);
-    setStatus("Saved to CareerTrack.");
-    showSection(mainSection);
-  } catch (err) {
-    if (err.message.includes("401") || err.message.includes("Unauthorized")) {
-      apiKey = null;
-      await ctkSetApiKey(null);
-      setStatus("Your connection expired — reconnect your account.");
-      showSection(connectSection);
+    const existing = await ctkFetchApplications(apiKey, apiBase);
+    const isDuplicate = existing.some(
+      (app) =>
+        app.company?.name?.trim().toLowerCase() === parsed.company.toLowerCase() &&
+        app.role?.trim().toLowerCase() === parsed.title.toLowerCase()
+    );
+
+    if (isDuplicate) {
+      pendingApplication = parsed;
+      setStatus(null);
+      document.getElementById("duplicateMessage").textContent =
+        `You've already applied to "${parsed.title}" at ${parsed.company}. Save it again anyway?`;
+      showSection(duplicateWarningSection);
       return;
     }
-    setStatus(`Save failed: ${err.message}`);
+  } catch (err) {
+    // Don't block saving over a failed duplicate check — just skip it.
+    console.warn("[CareerTrack] duplicate check failed, saving anyway:", err);
   }
+
+  await saveApplication(parsed);
+});
+
+document.getElementById("confirmDuplicateBtn").addEventListener("click", async () => {
+  if (!pendingApplication) return;
+  await saveApplication(pendingApplication);
+});
+
+document.getElementById("goBackBtn").addEventListener("click", () => {
+  pendingApplication = null;
+  setStatus(null);
+  showSection(previewSection);
 });
 
 init();

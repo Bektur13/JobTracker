@@ -42,6 +42,7 @@ router.get('/', getValidators, async (req: Request, res: Response) => {
                 orderBy: { [sortField]: sortOrder },
                 skip: (page - 1) * pageSize,
                 take: pageSize,
+                include: { company: true },
             }),
             prisma.jobApplication.count({ where }),
         ]);
@@ -86,6 +87,7 @@ router.post('/', postValidators, async (req: Request, res: Response) => {
                 location, salaryRange, description, sourceUrl, source,
                 ...(dateApplied ? { dateApplied: new Date(dateApplied) } : {}),
             },
+            include: { company: true },
         });
 
         return res.status(201).json(application);
@@ -107,6 +109,7 @@ router.get('/:id', idParamValidators, async (req: Request, res: Response) => {
 
         const application = await prisma.jobApplication.findFirst({
             where: { id, userId: req.dbUser!.id },
+            include: { company: true },
         });
 
         if (!application) {
@@ -151,7 +154,7 @@ router.patch('/:id', patchValidators, async (req: Request, res: Response) => {
             return res.status(404).json({ error: 'Application not found' });
         }
 
-        const application = await prisma.jobApplication.update({ where: { id }, data });
+        const application = await prisma.jobApplication.update({ where: { id }, data, include: { company: true } });
 
         return res.status(200).json(application);
     } catch (error) {
@@ -207,6 +210,7 @@ router.patch('/:id/stage', stageValidators, async (req: Request, res: Response) 
         const application = await prisma.jobApplication.update({
             where: { id },
             data: { stage: req.body.stage },
+            include: { company: true },
         });
 
         return res.status(200).json(application);

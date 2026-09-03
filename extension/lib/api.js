@@ -1,4 +1,18 @@
 // Runs in the popup context.
+async function ctkFetchApplications(apiKey, apiBase) {
+  const res = await fetch(`${apiBase}/applications?pageSize=100`, {
+    headers: { Authorization: `Bearer ${apiKey}` },
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error ?? `Request failed (${res.status})`);
+  }
+
+  const { data } = await res.json();
+  return data;
+}
+
 async function ctkSaveApplication(parsed, apiKey, apiBase) {
   const res = await fetch(`${apiBase}/applications`, {
     method: "POST",

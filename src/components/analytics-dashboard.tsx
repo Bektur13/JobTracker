@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   BarChart,
@@ -12,23 +12,114 @@ import {
   AreaChart,
   Area,
 } from "recharts";
-import { TrendingUp, Target, CheckCircle2 } from "lucide-react";
+import { TrendingUp, TrendingDown, Target, CheckCircle2, Loader2 } from "lucide-react";
+import { fetchApplications } from "@/lib/expressApi";
+import type { ApplicationStage, JobApplication } from "@/components/kanban/board";
 
-const velocityData = [
-  { month: "May", applications: 12 },
-  { month: "Jun", applications: 24 },
-  { month: "Jul", applications: 38 },
-  { month: "Aug", applications: 18 },
+const FUNNEL_STAGES: { id: ApplicationStage; label: string }[] = [
+  { id: "APPLIED", label: "Applied" },
+  { id: "SCREENING", label: "Screening" },
+  { id: "TECHNICAL", label: "Technical" },
+  { id: "OFFER", label: "Offer" },
 ];
 
-const conversionData = [
-  { stage: "Applied", count: 92 },
-  { stage: "Screening", count: 28 },
-  { stage: "Technical", count: 12 },
-  { stage: "Offer", count: 3 },
-];
+function monthKey(date: Date) {
+  return `${date.getFullYear()}-${date.getMonth()}`;
+}
+
+function getVelocityData(applications: JobApplication[]) {
+  const now = new Date();
+  const months = Array.from({ length: 6 }, (_, i) => {
+    const d = new Date(now.getFullYear(), now.getMonth() - (5 - i), 1);
+    return { key: monthKey(d), month: d.toLocaleString("en-US", { month: "short" }), applications: 0 };
+  });
+  const byKey = new Map(months.map((m) => [m.key, m]));
+
+  for (const app of applications) {
+    if (!app.dateApplied) continue;
+    const bucket = byKey.get(monthKey(new Date(app.dateApplied)));
+    if (bucket) bucket.applications += 1;
+  }
+
+  return months.map(({ month, applications }) => ({ month, applications }));
+}
+
+function getConversionData(applications: JobApplication[]) {
+  return FUNNEL_STAGES.map(({ id, label }) => ({
+    stage: label,
+    count: applications.filter((app) => app.stage === id).length,
+  }));
+}
+
+function countInMonth(applications: JobApplication[], key: string) {
+  return applications.filter((app) => app.dateApplied && monthKey(new Date(app.dateApplied)) === key).length;
+}
 
 export function AnalyticsDashboard() {
+  const [applications, setApplications] = useState<JobApplication[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchApplications()
+      .then((data) => {
+        if (!cancelled) setApplications(data);
+      })
+      .catch((err) => {
+        if (!cancelled) setLoadError(err instanceof Error ? err.message : "Unable to load analytics");
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const stats = useMemo(() => {
+    const total = applications.length;
+    // No stage-history log exists — "interviewed" is approximated as
+    // applications currently sitting at or past the Screening stage.
+    const interviewedCount = applications.filter(
+      (app) => app.stage === "SCREENING" || app.stage === "TECHNICAL" || app.stage === "OFFER"
+    ).length;
+    const offerCount = applications.filter((app) => app.stage === "OFFER").length;
+
+    const now = new Date();
+    const thisMonthCount = countInMonth(applications, monthKey(now));
+    const lastMonthCount = countInMonth(applications, monthKey(new Date(now.getFullYear(), now.getMonth() - 1, 1)));
+    const momChange = lastMonthCount === 0
+      ? (thisMonthCount > 0 ? 100 : 0)
+      : ((thisMonthCount - lastMonthCount) / lastMonthCount) * 100;
+
+    return {
+      total,
+      interviewedCount,
+      interviewRate: total ? (interviewedCount / total) * 100 : 0,
+      offerCount,
+      offerConversion: total ? (offerCount / total) * 100 : 0,
+      momChange,
+    };
+  }, [applications]);
+
+  const velocityData = useMemo(() => getVelocityData(applications), [applications]);
+  const conversionData = useMemo(() => getConversionData(applications), [applications]);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-1 items-center justify-center gap-2 p-4 text-sm text-muted-foreground">
+        <Loader2 className="size-4 animate-spin" /> Loading analytics...
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return <div className="flex flex-1 items-center justify-center p-4 text-sm text-destructive">{loadError}</div>;
+  }
+
   return (
     <div className="space-y-6 p-4">
       {/* Top Stat Cards */}
@@ -39,9 +130,15 @@ export function AnalyticsDashboard() {
             <Target className="w-4 h-4 text-blue-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-card-foreground">92</div>
-            <p className="text-xs text-emerald-400 flex items-center gap-1 mt-1">
-              <TrendingUp className="w-3 h-3" /> +18% from last month
+            <div className="text-2xl font-bold text-card-foreground">{stats.total}</div>
+            <p
+              className={`text-xs flex items-center gap-1 mt-1 ${
+                stats.momChange >= 0 ? "text-emerald-400" : "text-rose-400"
+              }`}
+            >
+              {stats.momChange >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+              {stats.momChange >= 0 ? "+" : ""}
+              {stats.momChange.toFixed(0)}% from last month
             </p>
           </CardContent>
         </Card>
@@ -52,8 +149,10 @@ export function AnalyticsDashboard() {
             <TrendingUp className="w-4 h-4 text-purple-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-card-foreground">30.4%</div>
-            <p className="text-xs text-muted-foreground mt-1">28 out of 92 applications</p>
+            <div className="text-2xl font-bold text-card-foreground">{stats.interviewRate.toFixed(1)}%</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              {stats.interviewedCount} out of {stats.total} applications
+            </p>
           </CardContent>
         </Card>
 
@@ -63,8 +162,10 @@ export function AnalyticsDashboard() {
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-card-foreground">3.2%</div>
-            <p className="text-xs text-muted-foreground mt-1">3 active offers received</p>
+            <div className="text-2xl font-bold text-card-foreground">{stats.offerConversion.toFixed(1)}%</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              {stats.offerCount} active offer{stats.offerCount === 1 ? "" : "s"} received
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -80,7 +181,7 @@ export function AnalyticsDashboard() {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={velocityData}>
                 <XAxis dataKey="month" stroke="#64748b" fontSize={12} tickLine={false} />
-                <YAxis stroke="#64748b" fontSize={12} tickLine={false} />
+                <YAxis stroke="#64748b" fontSize={12} tickLine={false} allowDecimals={false} />
                 <Tooltip
                   contentStyle={{ backgroundColor: "var(--card)", borderColor: "var(--border)" }}
                   itemStyle={{ color: "var(--card-foreground)" }}
@@ -100,7 +201,7 @@ export function AnalyticsDashboard() {
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={conversionData}>
                 <XAxis dataKey="stage" stroke="#64748b" fontSize={12} tickLine={false} />
-                <YAxis stroke="#64748b" fontSize={12} tickLine={false} />
+                <YAxis stroke="#64748b" fontSize={12} tickLine={false} allowDecimals={false} />
                 <Tooltip
                   contentStyle={{ backgroundColor: "var(--card)", borderColor: "var(--border)" }}
                   itemStyle={{ color: "var(--card-foreground)" }}

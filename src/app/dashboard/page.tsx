@@ -1,21 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { KanbanBoard, JobApplication, ApplicationStage } from "@/components/kanban/board";
 import { ApplicationDetailDrawer } from "@/components/ApplicationDrawer";
 import { AddApplicationDialog } from "@/components/AddApplicationDialog";
-import { Plus } from "lucide-react";
+import { fetchApplications, updateApplicationStage } from "@/lib/expressApi";
+import { Plus, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const MOCK_APPLICATIONS: JobApplication[] = [
-  { id: "1", companyName: "Stripe", jobTitle: "Software Engineer", location: "Seattle, WA", stage: "APPLIED", salaryRange: "$150k - $180k", matchScore: 92, updatedAt: "2026-08-09" },
-  { id: "2", companyName: "Vercel", jobTitle: "Fullstack Developer", location: "Remote", stage: "SCREENING", salaryRange: "$140k - $170k", matchScore: 88, updatedAt: "2026-08-07" },
-  { id: "3", companyName: "Meta", jobTitle: "Frontend Engineer", location: "Bellevue, WA", stage: "TECHNICAL", salaryRange: "$165k - $195k", matchScore: 95, updatedAt: "2026-08-05" },
-  { id: "4", companyName: "Airbnb", jobTitle: "Senior UI Engineer", location: "Remote", stage: "OFFER", salaryRange: "$180k - $210k", matchScore: 90, updatedAt: "2026-08-01" },
-];
-
 export default function DashboardPage() {
-  const [applications, setApplications] = useState<JobApplication[]>(MOCK_APPLICATIONS);
+  const [applications, setApplications] = useState<JobApplication[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [selectedAppId, setSelectedAppId] = useState<string | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -25,15 +21,41 @@ export default function DashboardPage() {
   // changed via drag-and-drop elsewhere never goes stale.
   const selectedApp = applications.find((app) => app.id === selectedAppId) ?? null;
 
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchApplications()
+      .then((data) => {
+        if (!cancelled) setApplications(data);
+      })
+      .catch((err) => {
+        if (!cancelled) setLoadError(err instanceof Error ? err.message : "Unable to load applications");
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const handleSelectApp = (app: JobApplication) => {
     setSelectedAppId(app.id);
     setIsDrawerOpen(true);
   };
 
   const handleStageChange = async (appId: string, newStage: ApplicationStage) => {
-    console.log(`Updated application ${appId} stage to ${newStage}`);
-    // Here you execute your Express API patch request:
-    // await fetch(`/api/applications/${appId}/stage`, { method: "PATCH", body: JSON.stringify({ stage: newStage }) })
+    try {
+      const updated = await updateApplicationStage(appId, newStage);
+      setApplications((prev) => prev.map((app) => (app.id === appId ? updated : app)));
+    } catch (err) {
+      console.error("Failed to update stage, resyncing from server:", err);
+      // The board already applied this optimistically during drag — on
+      // failure, refetch to fall back to whatever the server actually has
+      // rather than leaving the UI showing a stage change that didn't save.
+      fetchApplications().then(setApplications).catch(() => {});
+    }
   };
 
   const handleAddApplication = (application: JobApplication) => {
@@ -56,12 +78,24 @@ export default function DashboardPage() {
         </Button>
       </div>
 
-      <KanbanBoard
-        applications={applications}
-        onApplicationsChange={setApplications}
-        onApplicationSelect={handleSelectApp}
-        onStageChange={handleStageChange}
-      />
+      {isLoading && (
+        <div className="flex flex-1 items-center justify-center gap-2 text-sm text-muted-foreground">
+          <Loader2 className="size-4 animate-spin" /> Loading applications...
+        </div>
+      )}
+
+      {!isLoading && loadError && (
+        <div className="flex flex-1 items-center justify-center text-sm text-destructive">{loadError}</div>
+      )}
+
+      {!isLoading && !loadError && (
+        <KanbanBoard
+          applications={applications}
+          onApplicationsChange={setApplications}
+          onApplicationSelect={handleSelectApp}
+          onStageChange={handleStageChange}
+        />
+      )}
 
       <ApplicationDetailDrawer
         application={selectedApp}
@@ -70,7 +104,12 @@ export default function DashboardPage() {
         onUpdateApplication={handleUpdateApplication}
       />
 
-      <AddApplicationDialog open={isAddOpen} onOpenChange={setIsAddOpen} onAdd={handleAddApplication} />
+      <AddApplicationDialog
+        open={isAddOpen}
+        onOpenChange={setIsAddOpen}
+        onAdd={handleAddApplication}
+        applications={applications}
+      />
     </div>
   );
 }
